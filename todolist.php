@@ -22,16 +22,14 @@
         {
     
             private static $instance = false;
-            private $tasks = array();
-            private $message = '';
     
             private function __construct()
             {                
                 $this->addTask('task 1');
                 $this->addTask('task 2');
                 $this->addTask('task 3');
-                add_action('admin_menu', array($this, 'showMenu'));
-                add_action("admin_notices", array($this, 'showMessage'));
+                add_action('init', array($this,'register_task_content_type'));
+                add_action("admin_notices", array($this, 'getTasks'));
             }
             
             public static function getInstance()
@@ -49,35 +47,63 @@
             
             public function getTasks()
             {
-                return $this->tasks;
-            }
-            
-            public function showMenu()
-            {
-                add_menu_page(
-                    'ToDo List',
-                    'ToDo List',
-                    'manage_options',
-                    plugin_dir_path(__FILE__).'views/todolistview.php',
-                    null
-                    );
-                add_submenu_page(
-                    plugin_dir_path(__FILE__).'views/todolistview.php',
-                    'New task',
-                    'New task',
-                    'manage_options',
-                    plugin_dir_path(__FILE__).'views/newtask.php'
-                    );
-            }
+                global $post_type;
+                if ($post_type == 'tdl_tasks')
+                    return '';
+                $args = array(
+                    'post_type' => 'tdl_tasks'
+                );
+                $loop = new WP_Query($args);
+                echo '<ol>';
+                while ($loop->have_posts()) {
+                    $loop->the_post();
+                    the_title('<li>', '</li>');
+                }
+                echo '</ol>';
+            }         
             
             private function setMessage(string $mes)
             {
                 $this->message = $mes;
             }
             
-            public function showMessage()
-            {
-                echo "<h1>$this->message</h1>";
+            public function register_task_content_type(){
+                //Лейблы типа постов
+                $labels = array(
+                    'name' => 'Location',
+                    'singular_name' => 'Tasks',
+                    'menu_name' => 'Tasks',
+                    'name_admin_bar' => 'Task',
+                    'add_new' => 'Add New',
+                    'add_new_item' => 'Add New Task',
+                    'new_item' => 'New Task',
+                    'edit_item' => 'Edit Task',
+                    'view_item' => 'View Task',
+                    'all_items' => 'All Tasks',
+                    'search_items' => 'Search Tasks',
+                    'parent_item_colon'  => 'Parent Task:',
+                    'not_found' => 'No Tasks found.',
+                    'not_found_in_trash' => 'No Tasks found in Trash.',
+                );
+                                   
+                //аргументы типа постов
+                $args = array(
+                    'labels' => $labels,
+                    'public' => false,
+                    'publicly_queryable'=> true,
+                    'show_ui' => true,
+                    'show_in_nav' => true,
+                    'query_var' => true,
+                    'hierarchical' => false,
+                    'supports' => array('title','thumbnail','editor'),
+                    'has_archive' => true,
+                    'menu_position' => 20,
+                    'show_in_admin_bar' => true,
+                    'menu_icon' => 'dashicons-location-alt',
+                    'rewrite' => array('slug' => 'tasks', 'with_front' => 'true')
+                );
+                //регистрация типа постов
+                register_post_type('tdl_tasks', $args);
             }
         }
         
