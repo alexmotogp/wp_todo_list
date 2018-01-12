@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+#tdl-tasks {
+	border: 1px solid #008800;
+	margin-top: 30px;
+	width: 50%;
+}
+
+#tdl-tasks h3 {
+	text-align: center;
+}
+
+#tdl-tasks span {
+	display: inline-block;
+	width: 50%;
+	float: right;
+	position: relative;
+	text-align: right;
+	padding-right: 5px;
+}
+
+#tdl-tasks span a {
+	padding: 0 10px;
+}
+
+#tdl-tasks ol {
+	font-size: 14px;
+	color: green;	
+}
