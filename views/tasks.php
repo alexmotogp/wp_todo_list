@@ -3,7 +3,9 @@
 	<ol>
 		<?php 
 		  foreach ($tasks as $task) {
-		      echo '<li>'.$task['title'].' <span><a href="'.get_edit_post_link($task['id']).'">Edit</a><a href="">Delete</a></span></li>';
+		      echo '<li>'.$task->getTask().' <span><a href="'.get_edit_post_link($task->getId()).'">'.__('Edit', "tdl").'</a><a href="">'.__('Delete', "tdl").'</a></span>';
+		      echo '<div>'.$task->getDescription().'</div>';    
+		      echo '</li>';
 		  }
 		?>
 	</ol>

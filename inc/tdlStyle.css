@@ -27,3 +27,17 @@
 	font-size: 14px;
 	color: green;	
 }
+
+#tdl-tasks li div {
+	display: none; 
+	position: relative;
+	border: 1px solid #000000; 
+	background-color: #c0c0c0;  
+	width: 600px;
+	height: auto;
+	padding: 10px;
+}
+
+#tdl-tasks li {
+	cursor: pointer;
+}
