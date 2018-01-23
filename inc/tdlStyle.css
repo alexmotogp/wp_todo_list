@@ -10,7 +10,7 @@
 	text-align: center;
 }
 
-#tdl-tasks span {
+#tdl-tasks ol .sp_buttons {
 	display: inline-block;
 	width: 50%;
 	float: right;
@@ -19,7 +19,7 @@
 	padding-right: 5px;
 }
 
-#tdl-tasks span a {
+#tdl-tasks ol .sp_buttons a {
 	padding: 0 10px;
 }
 
@@ -39,5 +39,19 @@
 }
 
 #tdl-tasks li {
+	cursor: pointer;
+}
+
+#addTaskForm, #addTaskLable {
+	margin: 15px;
+} 
+
+#addTaskForm {
+	display: none;
+}
+
+#addTaskLable {
+	text-decoration: underline;
+	color: #0000ff;
 	cursor: pointer;
 }

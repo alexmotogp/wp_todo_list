@@ -89,6 +89,10 @@
             {                
                 return array_key_exists($this->position, $this->tasks);
             }
+            
+            public function haveID(int $id) {
+                return array_key_exists($id, $this->tasks);
+            }
                                                         
         }        
     }

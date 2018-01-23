@@ -56,6 +56,7 @@
          */
         public function setDescription($description)
         {
+            //$description = 
             $this->description = $description;
         }
         

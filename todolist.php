@@ -15,14 +15,21 @@
     require_once 'class.todolist.php';
     
     class tdlMain {
+        
+        private const AJAX_TRUE = 1;
+        private const AJAX_FALSE = 0;
+        
         private static $instance = false;
         private $tdl;
+        private $tdlNonce;
         
         private function __construct() {            
             add_action('init', array($this,'register_task_content_type'));
             add_action('init', array($this,'initToDoList'));
             add_action('admin_enqueue_scripts', array($this, 'tdl_enqueueScripts'));
             add_action('admin_notices', array($this, 'tdl_showTasks'));
+            add_action('wp_ajax_add_task', array($this, 'ajaxAddTask'));
+            add_action('wp_ajax_del_task', array($this, 'ajaxDelTask'));
         }
         
         public function initToDoList()
@@ -83,8 +90,33 @@
         
         public function tdl_enqueueScripts() {
             wp_enqueue_style('tdlStyle.css', plugin_dir_url(__FILE__).'/inc/tdlStyle.css');
-            wp_enqueue_script('tdl_script', plugin_dir_url(__FILE__).'/inc/tdl_script.js');
-            wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
+            wp_enqueue_script('tdl_script', plugin_dir_url(__FILE__).'/inc/tdl_script.js', array('jquery'));
+            
+            $this->tdlNonce = wp_create_nonce('tdlTask');
+            wp_localize_script('tdl_script', 'ajaxTask', array('nonce' => $this->tdlNonce));                                   
+        }
+        
+        public function ajaxAddTask() {
+            check_ajax_referer('tdlTask');
+            $task = new tdlTask();
+            //TODO: ѕолучить данные по задаче из а€кс запроса
+            $this->tdl->addTask($task);
+            echo 'hello '.$_POST['task'];
+            wp_die();
+        }
+        
+        public function ajaxDelTask() {
+            check_ajax_referer('tdlTask');
+            sanitize_post($_POST);
+            $taskId = $_POST['task_id'];
+            $taskId = explode('/', $taskId);
+            $taskId = array_pop($taskId);        
+            if ($this->tdl->haveID($taskId))
+                wp_die(self::AJAX_FALSE);
+            if(!wp_delete_post($taskId)) {
+                wp_die(self::AJAX_FALSE);                
+            }
+            wp_die(self::AJAX_TRUE);
         }
     }
     
