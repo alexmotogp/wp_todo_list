@@ -44,6 +44,19 @@
                 if (get_class($task) == 'tdlTask')
                     $this->tasks[] = $task;
             }
+            
+            public function delTask($task)
+            {
+                $taskPos = array_search($task, $this->tasks);
+                if($taskPos)
+                {
+                    unset($this->tasks[$taskPos]);                    
+                    $this->rewind();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
     
             /**
              * {@inheritDoc}

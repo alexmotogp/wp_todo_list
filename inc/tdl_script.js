@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-	$('#tdl-tasks li .sp_task').click(function(el) {
+	$('#tdl-tasks').on('click', 'li .sp_task',function(el) {
 		$(this).siblings("div").slideToggle();
 	});
 	
@@ -7,22 +7,26 @@ jQuery(document).ready(function($) {
 		$('#addTaskForm').slideToggle();		
 	});
 	
-	//TODO: Закончить добавление задач через AJAX
 	$('#btn_addTask').click(function() {
+		var txtTask = $('#txt_task').val();
+		var descTask = $('#ta_desc').val();
+		var task_json = {"task":"" + txtTask + "", "desc":"" + descTask + ""};
 		$.post(
 				ajaxurl,
 				{
 					_ajax_nonce: ajaxTask.nonce,
 					action: 'add_task',
-					task: $('#txt_task').val()
+					task: task_json
 				},
-				function(data) {
-					alert(data);
+				function(data) {					
+					$('#tdl-tasks>ol').append(data);	
+					$('#txt_task').val("");
+					$('#ta_desc').val("");
 				}
 				);
 	});
 	
-	$('a#a_delete').click(function(event) {
+	$('#tdl-tasks').on('click', 'a#a_delete',function(event) {
 		event.preventDefault();
 		var cur_el = $(this); 
 		$.post(

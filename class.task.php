@@ -22,7 +22,7 @@
             return $this->id;
         }
         
-        private function setId($id)
+        public function setId($id)
         {
             $this->id = $id;
         }
@@ -58,6 +58,29 @@
         {
             //$description = 
             $this->description = $description;
+        }
+        
+        public function _toPostFormat()
+        {
+            $post = array(
+                'id' => $this->getId(),
+                'post_title' => $this->getTask(),
+                'post_content' => $this->getDescription(),
+                'post_type' => 'tdl_tasks',
+                'post_status' => 'publish'
+            );
+            
+            return $post;
+        }
+        
+        public function _toJson()
+        {
+            $json = array(
+                'id' => $this->getId(),
+                'task' => $this->getTask(),
+                'desc' => $this->getDescription()
+            );
+            return json_encode($json);
         }
         
     }

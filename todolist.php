@@ -45,20 +45,20 @@
         
         public function register_task_content_type(){
             $labels = array(
-                'name' => __('Task', 'task'),
-                'singular_name' => __('Tasks', 'tasks'),
-                'menu_name' => __('Tasks', 'tasks'),
-                'name_admin_bar' => __('Task', 'task'),
-                'add_new' => __('Add New', 'addnew'),
-                'add_new_item' => __('Add New Task', 'addnewtask'),
-                'new_item' => __('New Task', 'newtask'),
-                'edit_item' => __('Edit Task', 'edittask'),
-                'view_item' => __('View Task', 'viewtask'),
-                'all_items' => __('All Tasks', 'alltasks'),
-                'search_items' => __('Search Tasks', 'searchtasks'),
-                'parent_item_colon'  => __('Parent Task:', 'parenttask'),
-                'not_found' => __('No Tasks found', 'nofoundtask'),
-                'not_found_in_trash' => __('No Tasks found in Trash', 'nofoundtrashtask'),
+                'name' => __('Task', 'tdl'),
+                'singular_name' => __('Tasks', 'tdl'),
+                'menu_name' => __('Tasks', 'tdl'),
+                'name_admin_bar' => __('Task', 'tdl'),
+                'add_new' => __('Add New', 'tdl'),
+                'add_new_item' => __('Add New Task', 'tdl'),
+                'new_item' => __('New Task', 'tdl'),
+                'edit_item' => __('Edit Task', 'tdl'),
+                'view_item' => __('View Task', 'tdl'),
+                'all_items' => __('All Tasks', 'tdl'),
+                'search_items' => __('Search Tasks', 'tdl'),
+                'parent_item_colon'  => __('Parent Task:', 'tdl'),
+                'not_found' => __('No Tasks found', 'tdl'),
+                'not_found_in_trash' => __('No Tasks found in Trash', 'tdl'),
             );
             
             $args = array(
@@ -97,11 +97,18 @@
         }
         
         public function ajaxAddTask() {
-            check_ajax_referer('tdlTask');
-            $task = new tdlTask();
-            //TODO: Получить данные по задаче из аякс запроса
+            check_ajax_referer('tdlTask');            
+            //Получаю данные от скрипта
+            sanitize_post($_POST);
+            $postData = $_POST['task'];            
+            $task = new tdlTask(0, $postData['task'], $postData['desc']);    
+            $id = wp_insert_post($task->_toPostFormat());
+            if(!$id){
+                wp_die(__('Error: The task was not added!', 'tdl'));
+            };            
+            $task->setId($id);
             $this->tdl->addTask($task);
-            echo 'hello '.$_POST['task'];
+            require_once 'views/task.php';
             wp_die();
         }
         
@@ -115,7 +122,7 @@
                 wp_die(self::AJAX_FALSE);
             if(!wp_delete_post($taskId)) {
                 wp_die(self::AJAX_FALSE);                
-            }
+            }            
             wp_die(self::AJAX_TRUE);
         }
     }

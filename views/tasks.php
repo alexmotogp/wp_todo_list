@@ -2,14 +2,7 @@
 	<h3><?php echo __('ToDo List', "tdl")?></h3>
 	<ol>
 		<?php foreach ($tasks as $task):?>
-		      <li>
-		      	<span class='sp_task'><?php echo $task->getTask() ?></span>
-		      	<span class='sp_buttons'>
-		      		<a href="<?php echo get_edit_post_link($task->getId()) ?>"><?php echo __('Edit', "tdl") ?></a>
-		      		<a id="a_delete" href="<?php echo plugins_url('deltask/id/'.$task->getId(), __FILE__.'/..') ?>"><?php echo __('Delete', "tdl") ?></a>
-		      	</span>
-		      <div><?php echo $task->getDescription() ?></div>  
-		      </li>
+		      <?php require 'task.php';?>
 		  <?php endforeach; ?>
 	</ol>
 	<div id="addTaskLable"><span><?php echo __('add task', 'tdl') ?></span></div>
