@@ -1,0 +1,1 @@
+<p><?php esc_html_e('ToDo List Settings', 'tdl')?></p>

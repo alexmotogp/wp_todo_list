@@ -1,9 +1,19 @@
 @charset "UTF-8";
 
+#tdl p {
+	padding-left: 15px;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 #tdl-tasks {
 	border: 1px solid #008800;
-	margin-top: 30px;
+	margin-top: 5px;
 	width: 50%;
+}
+
+.hide_tasks {
+	display: none;
 }
 
 #tdl-tasks h3 {

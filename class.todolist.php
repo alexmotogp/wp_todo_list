@@ -34,7 +34,7 @@
                 $loop = new WP_Query($args);
                 while ($loop->have_posts()) {
                     $loop->the_post();
-                    $task = new tdlTask(get_the_ID(), the_title('', '', false), get_the_content());
+                    $task = new tdlTask(get_the_ID(), (string)the_title('', '', false), get_the_content());
                     $this->addTask($task);
                 }
             } 
@@ -105,6 +105,11 @@
             
             public function haveID(int $id) {
                 return array_key_exists($id, $this->tasks);
+            }
+            
+            public function getCount()
+            {
+                return count($this->tasks);
             }
                                                         
         }        

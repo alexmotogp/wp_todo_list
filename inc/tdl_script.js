@@ -1,4 +1,7 @@
 jQuery(document).ready(function($) {
+	$('#tdl p').click(function() {
+		$('#tdl-tasks').slideToggle();
+	});
 	$('#tdl-tasks').on('click', 'li .sp_task',function(el) {
 		$(this).siblings("div").slideToggle();
 	});
